@@ -1,0 +1,18 @@
+---
+import Layout from "../layouts/Layout.astro";
+import JobContainer from "@components/JobContainer";
+import { fetchItem } from "../lib/hn";
+
+const data = await fetchItem(35424807);
+const kids = data.kids;
+
+const kidsData =
+  kids != null ? await Promise.all(kids.map((id) => fetchItem(id))) : null;
+---
+
+<Layout title="Ask HN: Who's Hiring?">
+  <main>
+    <h1 class="mb-6 text-5xl font-bold">Hacker News: Who's Hiring?</h1>
+    <JobContainer client:only="react" items={kidsData} />
+  </main>
+</Layout>
